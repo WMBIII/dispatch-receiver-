@@ -17,8 +17,7 @@ jobs:
         id: changes
         uses: actions/checkout@v2      
       - run: |
-          echo "::set-output name=configFile::$(git diff --name-only | grep project.json | xargs )"   \
-          echo "${{needs.filesChanged.outputs.configFile}}"
+          echo "git diff --name-only ${{ github.event.before }}..${{ github.event.after }})"
   # createPullRequest:
   #   runs-on: ubuntu-latest
   #   steps:
