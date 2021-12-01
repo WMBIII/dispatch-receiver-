@@ -27,6 +27,7 @@ jobs:
     if: ${{needs.changedfiles.outputs.configFile}}
     steps:
       - name: echo changed files
+        uses: actions/checkout@v2
         run: echo ${{needs.changedfiles.outputs.configFile}}
 
   # createPullRequest:
