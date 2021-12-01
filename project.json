@@ -3,6 +3,10 @@
         "first_project": {
             "feats": ["menu"],
             "has_pets": true
+        },
+        "second_project": {
+            "feats": ["overalls"],
+            "can_eat": true
         }
     }
 }
