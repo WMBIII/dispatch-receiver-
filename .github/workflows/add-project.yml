@@ -6,13 +6,12 @@ jobs:
   changedFiles:
     runs-on: ubuntu-latest
     outputs:
-      configFile: ${{ steps.changes.outputs.configFile }}
+      configFile: ${{ steps.step1.outputs.configFile }}
     steps:    
       - name: Get changed files
         # uses: actions/checkout@v2
-        id: changed_files
-        run: |
-            echo "::set-output name=configFile::hello"
+        id: steps1
+        run: echo "::set-output name=configFile::hello"
   createPullRequest:
     runs-on: ubuntu-latest
     needs: changedFiles
