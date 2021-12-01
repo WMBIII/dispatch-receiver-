@@ -23,34 +23,30 @@ jobs:
         # Set outputs using the command.
         run: |
           echo "::set-output name=configFile::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep project.json | xargs)"
-  lint:
+
+  createPullRequest:
     runs-on: ubuntu-latest
-    # require the first job to have ran
     needs: changedfiles
-    # only run there are changed files
     if: ${{needs.changedfiles.outputs.configFile}}
     steps:
-      - name: echo changed files
-        run: echo ${{needs.changedfiles.outputs.configFile}}
-
-
-  # createPullRequest:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2 
-  #     - name: "Create PR"
-  #       id: cpr
-  #       uses: peter-evans/create-pull-request@v3
-  #       with:
-  #         token: ${{ secrets.PAT }}
-  #         commit-message: "Adds new project"
-  #         committer: GitHub <noreply@github.com>
-  #         author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-  #         title: 'Adds new project: ${{ github.event.client_payload.project_name }}'
-  #         body: |
-  #           This adds the new project `${{ github.event.client_payload.project_name }}` module to new to `${{needs.filesChanged.outputs.configFile}}`
-  #         draft: true
-  #         delete-branch: true 
-  #         branch: ${{github.actor}}/add-${{ github.event.client_payload.project_name }}-project
+      - uses: actions/checkout@v2 
+      - name: "Test"
+        run: echo "this worked"
+    # steps:
+    #   - uses: actions/checkout@v2 
+    #   - name: "Create PR"
+    #     id: cpr
+    #     uses: peter-evans/create-pull-request@v3
+    #     with:
+    #       token: ${{ secrets.PAT }}
+    #       commit-message: "Adds new project"
+    #       committer: GitHub <noreply@github.com>
+    #       author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+    #       title: 'Adds new project: ${{ github.event.client_payload.project_name }}'
+    #       body: |
+    #         This adds the new project `${{ github.event.client_payload.project_name }}` module to new to `${{needs.filesChanged.outputs.configFile}}`
+    #       draft: true
+    #       delete-branch: true 
+    #       branch: ${{github.actor}}/add-${{ github.event.client_payload.project_name }}-project
 
 
