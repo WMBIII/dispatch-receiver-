@@ -13,11 +13,9 @@ jobs:
     outputs:
       all: ${{ steps.changes.outputs.all}}
       configFile: ${{ steps.changes.outputs.configFile }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-     
+    steps:    
       - name: Get changed files
+        uses: actions/checkout@v2
         id: changes
         with:
           fetch-depth: 0
