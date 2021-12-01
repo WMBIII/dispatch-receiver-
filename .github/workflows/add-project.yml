@@ -21,9 +21,9 @@ jobs:
         id: changes
         with:
           fetch-depth: 0
-        run: |
-          echo "::set-output name=configFile::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep project.json | xargs)" \
-          echo ${{changedfiles.outputs.configFile}}
+          run: |
+            echo "::set-output name=configFile::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep project.json | xargs)" \
+            echo ${{changedfiles.outputs.configFile}}
 
   createPullRequest:
     runs-on: ubuntu-latest
