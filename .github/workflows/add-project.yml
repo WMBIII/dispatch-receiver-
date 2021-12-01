@@ -9,7 +9,7 @@ jobs:
       configFile: ${{ steps.changes.outputs.configFile }}
     steps:    
       - name: Get changed files
-        uses: actions/checkout@v2
+        # uses: actions/checkout@v2
         id: changed_files
         run: |
             echo "::set-output name=configFile::hello \
