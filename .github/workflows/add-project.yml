@@ -10,15 +10,13 @@ jobs:
       - run: echo ${{ github.event.client_payload.message }}
   filesChanged:
     runs-on: ubuntu-latest
-
-    steps:
-      - name: Get changed files
-        id: changes
-        uses: actions/checkout@v2  
-        with: 
-          fetch-depth: 0
-      - run: echo "CHANGED_FILES=$(git diff --name-only ${{ github.event.before }}..${{ github.event.after }})" >> $GITHUB_ENV
-
+    steps: 
+      - uses: actions/github-script@v5
+        with:
+          script: |
+            const diff_url = context.payload.pull_request.diff_url
+            const result = await github.request(diff_url)
+            console.log(result)
 
   # createPullRequest:
   #   runs-on: ubuntu-latest

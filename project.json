@@ -4,6 +4,8 @@
             "feats": ["menu"],
             "has_pets": true
         },
-        "second_project": []
+        "second_project": {
+            "feats": ["new"]
+        }
     }
 }
