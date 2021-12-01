@@ -18,9 +18,8 @@ jobs:
         id: changes
         uses: jitterbit/get-changed-files@v1
       - run: |
-          for changed_file in ${{ steps.files.modified.all }}; do
-            echo "Do something with this ${changed_file}."
-          done
+          echo "::set-output name=configFile::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep project.json | xargs))"  /
+          echo "${{needs.filesChanged.outputs.configFile}}"
   # createPullRequest:
   #   runs-on: ubuntu-latest
   #   steps:
@@ -41,4 +40,3 @@ jobs:
   #         branch: ${{github.actor}}/add-${{ github.event.client_payload.project_name }}-project
 
 
-# echo "::set-output name=configFile::$(git diff --name-only --diff-filter=ACmRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep project.json | xargs))"
