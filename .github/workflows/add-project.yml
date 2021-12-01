@@ -13,54 +13,32 @@ jobs:
     outputs:
       configFile: ${{steps.changes.outputs.configFile}}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2      
+      - uses: actions/checkout@v2      
       - name: Get changed files
         id: changes
-        run: |
-          echo "::set-output name=configFile::$(git diff --name-only --diff-filter=ACmRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep project.json | xargs))"
-    createPullRequest:
-      runs-on: ubuntu-latest
-      # steps:
-      # - uses: actions/checkout@v2
-
-      # - name: "Make changes for PR"
-      #   run: node 
-      - name: "Create PR"
-        id: cpr
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.PAT }}
-          commit-message: "Adds new project"
-          committer: GitHub <noreply@github.com>
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          title: 'Adds new project: ${{ github.event.client_payload.project_name }}'
-          body: |
-            This adds the new project new to....
-          draft: true
-
-
-  set_config_file_changed:
-    steps:
-
+        uses: jitterbit/get-changed-files@v1
+      - run: |
+          for changed_file in ${{ steps.files.modified.all }}; do
+            echo "Do something with this ${changed_file}."
+          done
   # createPullRequest:
   #   runs-on: ubuntu-latest
-  #   env:
   #   steps:
-  #   - uses: actions/checkout@v2
+  #     - uses: actions/checkout@v2 
+  #     - name: "Create PR"
+  #       id: cpr
+  #       uses: peter-evans/create-pull-request@v3
+  #       with:
+  #         token: ${{ secrets.PAT }}
+  #         commit-message: "Adds new project"
+  #         committer: GitHub <noreply@github.com>
+  #         author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+  #         title: 'Adds new project: ${{ github.event.client_payload.project_name }}'
+  #         body: |
+  #           This adds the new project `${{ github.event.client_payload.project_name }}` module to new to `${{needs.filesChanged.outputs.configFile}}`
+  #         draft: true
+  #         delete-branch: true 
+  #         branch: ${{github.actor}}/add-${{ github.event.client_payload.project_name }}-project
 
-  #   - name: "Make changes for PR"
-  #     run: node 
 
-  #   - name: "Create PR"
-  #     id: cpr
-  #     uses: peter-evans/create-pull-request@v3
-  #     with:
-  #       token: ${{ secrets.PAT }}
-  #       commit-message: "Adds new project"
-  #       committer: GitHub <noreply@github.com>
-  #       author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-  #       title: 'Adds new project: ${{ github.event.client_payload.project_name }}'
-  #       body: |
-  #         This adds the new project new to....
-  #       draft: true
+# echo "::set-output name=configFile::$(git diff --name-only --diff-filter=ACmRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep project.json | xargs))"
