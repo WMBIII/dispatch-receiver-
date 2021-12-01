@@ -8,27 +8,31 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: echo ${{ github.event.client_payload.message }}
-  filesChanged:
+  changedfiles:
     runs-on: ubuntu-latest
+    # Map a step output to a job output
     outputs:
+      all: ${{ steps.changes.outputs.all}}
       configFile: ${{ steps.changes.outputs.configFile }}
-    steps: 
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+    steps:
+        # Make sure we have some code to diff.
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Get changed files
+        id: changes
+        # Set outputs using the command.
         run: |
           echo "::set-output name=configFile::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep project.json | xargs)"
-
-  testChangedFiles: 
+  lint:
     runs-on: ubuntu-latest
     # require the first job to have ran
     needs: changedfiles
-     # only run there are changed files
+    # only run there are changed files
     if: ${{needs.changedfiles.outputs.configFile}}
     steps:
       - name: echo changed files
-        uses: actions/checkout@v2
         run: echo ${{needs.changedfiles.outputs.configFile}}
+
 
   # createPullRequest:
   #   runs-on: ubuntu-latest
