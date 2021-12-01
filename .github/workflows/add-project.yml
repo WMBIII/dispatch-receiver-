@@ -3,7 +3,7 @@ on:
   repository_dispatch:
     types: [new-project]
 jobs:
-  changedFiles:
+  job1:
     runs-on: ubuntu-latest
     outputs:
       configFile: ${{ steps.step1.outputs.configFile }}
@@ -14,8 +14,8 @@ jobs:
         run: echo "::set-output name=configFile::hello"
   createPullRequest:
     runs-on: ubuntu-latest
-    needs: changedFiles
-    if: ${{needs.changedFiles.outputs.configFile}}
+    needs: job1
+    if: ${{needs.job1.outputs.configFile}}
     steps:
       - name: "Test"
         run: echo ${{needs.changed.outputs.configFile}}
