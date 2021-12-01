@@ -10,11 +10,24 @@ jobs:
       - run: echo ${{ github.event.client_payload.message }}
   filesChanged:
     runs-on: ubuntu-latest
+    outputs:
+      configFile: ${{ steps.changes.outputs.configFile }}
     steps: 
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - run: echo "CHANGED_FILES=$(git diff --name-only ${{ github.event.before }}..${{ github.event.after }})" >> $GITHUB_ENV
+        run: |
+          echo "::set-output name=configFile::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep project.json | xargs)"
+
+  testChangedFiles: 
+    runs-on: ubuntu-latest
+    # require the first job to have ran
+    needs: changedfiles
+     # only run there are changed files
+    if: ${{needs.changedfiles.outputs.configFile}}
+    steps:
+      - name: echo changed files
+        run: echo ${{needs.changedfiles.outputs.configFile}}
 
   # createPullRequest:
   #   runs-on: ubuntu-latest
