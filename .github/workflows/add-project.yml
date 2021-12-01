@@ -16,7 +16,8 @@ jobs:
       - name: Get changed files
         id: changes
         uses: actions/checkout@v2      
-      - run: echo "git diff --name-only ${{ github.event.before }}..${{ github.event.after }}"
+      - run: git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
+
   # createPullRequest:
   #   runs-on: ubuntu-latest
   #   steps:
