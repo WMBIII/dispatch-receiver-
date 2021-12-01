@@ -15,8 +15,13 @@ jobs:
     steps:
       - name: Get changed files
         id: changes
-        uses: actions/checkout@v2      
-      - run: git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
+      - uses: actions/checkout@v2  
+      - uses: actions/github-script@v5 
+        with: 
+          script: |
+            const script = require('../script.js')
+            console.log(script({github, core}))
+        # - run: git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
 
   # createPullRequest:
   #   runs-on: ubuntu-latest
