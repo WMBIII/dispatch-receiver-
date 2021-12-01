@@ -8,14 +8,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: echo ${{ github.event.client_payload.message }}
-  name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v3
-   with:
-          token: ${{ secrets.PAT }}
-          committer: GitHub <noreply@github.com>
-          commit-message: Adds a new project
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          title: 'Adding new project ${{ github.event.client_payload.project_name }}'
-          body: |
-            This handles adding ${{ github.event.client_payload.project_name }} to the proper config file
+  createPullRequest:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v2
+
+    - name: "Make changes for PR"
+      run: echo "test" > test.txt
+
+    - name: "Create PR"
+      id: cpr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.PAT }}
+        commit-message: "Adds new project"
+        committer: GitHub <noreply@github.com>
+        author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+        title: 'Adds new project: ${{ github.event.client_payload.project_name }}'
+        body: |
+          This adds the new project new to....
+        draft: true
