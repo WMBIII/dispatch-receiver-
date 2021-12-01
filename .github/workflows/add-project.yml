@@ -10,18 +10,15 @@ jobs:
       - run: echo ${{ github.event.client_payload.message }}
   filesChanged:
     runs-on: ubuntu-latest
-    outputs:
-      configFile: ${{steps.changes.outputs.configFile}}
+
     steps:
       - name: Get changed files
         id: changes
       - uses: actions/checkout@v2  
-      - uses: actions/github-script@v5 
         with: 
-          script: |
-            const script = require('../script.js')
-            console.log(script({github, core}))
-        # - run: git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
+          fetch-depth: 0
+      - run: echo "CHANGED_FILES=$(git diff --name-only ${{ github.event.before }}..${{ github.event.after }})" >> $GITHUB_ENV
+      
 
   # createPullRequest:
   #   runs-on: ubuntu-latest
