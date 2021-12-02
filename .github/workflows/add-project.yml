@@ -17,8 +17,7 @@ jobs:
         id: set_output_config
         uses: technote-space/get-diff-action@v5
         with:
-          PATTERNS: |
-            +(project).json
+          FILES: project.json
       - name: Check files 
         run: echo ${{env.MATCHED_FiLES}}
 
