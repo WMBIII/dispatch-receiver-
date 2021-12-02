@@ -18,7 +18,7 @@ jobs:
         uses: technote-space/get-diff-action@v5
         with:
           PATTERNS: |
-            (project.json)
+            project.json
       - name: Check files 
         run: echo ${{env.MATCHED_FiLES}}
 
