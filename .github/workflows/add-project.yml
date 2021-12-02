@@ -19,6 +19,7 @@ jobs:
         with:
           PATTERNS: |
             (project.json)
+      - name: Check files 
         run: echo ${{env.MATCHED_FiLES}}
 
   createPullRequest:
