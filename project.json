@@ -5,6 +5,7 @@
             "has_pets": true
         },
         "second_project": {
+            "feats": ["xyzss"]
         }
     }
 }
