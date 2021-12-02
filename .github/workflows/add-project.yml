@@ -9,7 +9,6 @@ jobs:
       file: ${{ steps.set_output_config.outputs.file }}
     steps:    
       - name: Get changed files
-        uses: actions/checkout@v2
         id: set_output_config
         run: echo "::set-output name=file::hey"
             # echo "::set-output name=file::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep project.json | xargs)" 
