@@ -1,23 +1,18 @@
+# We need to do three things in this file: edit the config file, add that new file to git, and open the PR. 
 name: Repository Dispatch Receiver 
 on:
   repository_dispatch:
     types: [new-project]
 jobs:
-  # This name could be changed
-  edit_config_file:
-    runs-on: ubuntu-latest
-    outputs:
-      file: ${{ steps.set_output_config.outputs.file }}
-    steps: 
-    - uses: actions/checkout@v2
-    - name: Setup node 
-    - uses: actions/setup-node@v2
-      with: 
-          node-version: '14'
-    - name: Edit project config file 
-    - run: node 2 + 2
-      # run: node ./.github/workflows/update-config.js ${{context.payload.client_payload.project_name}}
-  createPullRequest:
+  # edit_config_file:
+    # This is where we receive github.event.client_payload.project_name. 
+    # Once we get it we want to run the script that allows us to access the file system
+    # to edit the config file. The example for this repo is a .json file we need to parse, edit, then 
+    # write back to the file system
+    # If we want 
+  # add_file_to_git:
+    # This is where we add the file to git. This could be taken care of in the first job?
+  create_pull_request:
     runs-on: ubuntu-latest
     needs: getConfigFile
     if: ${{needs.getConfigFile.outputs.file}}
