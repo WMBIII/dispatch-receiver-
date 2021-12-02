@@ -9,6 +9,8 @@ jobs:
     outputs:
       file: ${{ steps.set_output_config.outputs.file }}
     steps:    
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Get changed files
         id: set_output_config
         run: |
