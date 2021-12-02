@@ -8,8 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       file: ${{ steps.set_output_config.outputs.file }}
-    env:
-      PREV_COMMIT: echo "git rev-parse @~ | xargs"
     steps:    
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -18,8 +16,6 @@ jobs:
         uses: technote-space/get-diff-action@v5
         with:
           FILES: project.json
-      - name: Check files 
-        run: echo ${{env.MATCHED_FiLES}}
 
   createPullRequest:
     runs-on: ubuntu-latest
